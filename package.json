@@ -12,12 +12,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@langchain/google": "^0.2.8",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "dotenv": "^18.0.4",
     "express": "^5.2.1",
     "express-validator": "^7.3.2",
     "jsonwebtoken": "^9.0.3",
+    "langchain": "^1.5.14",
     "mongoose": "^9.10.2",
     "nodemailer": "^10.0.12"
   }
