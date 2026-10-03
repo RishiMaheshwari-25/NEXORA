@@ -5,13 +5,9 @@ import '../../../styles/register.scss'
 const Register = () => {
   const [email,setEmail]=useState('');
   const [password,setPassword]=useState('');
+  const [username,setUsername]=useState('');
+
   
-
-  const handleChange = (event) => {
-    const { name, value } = event.target
-    setFormData((currentFormData) => ({ ...currentFormData, [name]: value }))
-  }
-
   const handleSubmit = async (event) => {
     event.preventDefault()
     const payload = {
@@ -45,7 +41,7 @@ const Register = () => {
               maxLength={30}
               pattern="[a-zA-Z0-9_]+"
               title="Use 3–30 letters, numbers, or underscores."
-              value={formData.username}
+              value={username}
               onChange={(e)=>{setUsername(e.target.value)}}
               required
             />
@@ -59,7 +55,7 @@ const Register = () => {
               type="email"
               placeholder="you@example.com"
               autoComplete="email"
-              value={formData.email}
+              value={email}
               onChange={(e)=>{setEmail(e.target.value)}}
               required
             />
@@ -74,7 +70,7 @@ const Register = () => {
               placeholder="Create a password"
               autoComplete="new-password"
               minLength={6}
-              value={formData.password}
+              value={password}
               onChange={(e)=>{setPassword(e.target.value)}}
               required
             />
@@ -82,7 +78,7 @@ const Register = () => {
 
           
           <button className="register-form__submit" type="submit" >
-            
+             Create Account
           </button>
 
           <p className="register-form__switch">
