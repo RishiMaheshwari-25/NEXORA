@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#102233"/>
+      <stop offset=".5" stop-color="#1a3441"/>
+      <stop offset="1" stop-color="#243c43"/>
+    </linearGradient>
+    <linearGradient id="lake" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#102d38"/>
+      <stop offset="1" stop-color="#07161d"/>
+    </linearGradient>
+    <linearGradient id="reflection" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#c5a77e" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#c5a77e" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="shade" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#06111a" stop-opacity=".08"/>
+      <stop offset=".55" stop-color="#06111a" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#030b10" stop-opacity=".58"/>
+    </linearGradient>
+    <symbol id="pine" viewBox="0 0 60 180">
+      <path d="M30 0 9 49h13L3 83h18L0 121h25v59h10v-59h25L39 83h18L38 49h13z" fill="#091b20"/>
+    </symbol>
+    <pattern id="ripples" width="170" height="42" patternUnits="userSpaceOnUse">
+      <path d="M13 10h42m28 0h20m26 0h29M-20 27h30m26 0h65m25 0h42" stroke="#83a9a3" stroke-opacity=".12" stroke-width="2" stroke-linecap="round"/>
+    </pattern>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h1600v1000H0z"/>
+  <g fill="#d8d4c7" opacity=".48">
+    <circle cx="129" cy="104" r="1.5"/><circle cx="242" cy="178" r="1"/><circle cx="396" cy="88" r="1.4"/>
+    <circle cx="551" cy="152" r="1"/><circle cx="685" cy="74" r="1.3"/><circle cx="798" cy="185" r="1"/>
+    <circle cx="984" cy="95" r="1.4"/><circle cx="1126" cy="164" r="1"/><circle cx="1427" cy="103" r="1.4"/>
+    <circle cx="1510" cy="214" r="1"/>
+  </g>
+  <path d="M1320 111a32 32 0 1 0 35 48 28 28 0 1 1-35-48" fill="#d7bb8e" opacity=".78"/>
+  <path d="m0 494 183-186 96 101 187-226 169 184 145-119 183 208 147-193 151 174 139-145v309H0z" fill="#19303a"/>
+  <path d="m0 551 207-152 141 116 213-202 178 155 158-133 207 185 168-155 155 155 173-128v292H0z" fill="#10252d"/>
+  <path d="m438 343 53-62 44 67-33-12-20 12-22-12zM723 368l60-69 57 74-34-14-26 16-23-14zM1210 366l62-81 59 87-39-18-25 18-25-15z" fill="#758487" opacity=".25"/>
+  <path d="m0 510 127-42 68 21 116-70 102 60 104-53 139 93 137-75 109 55 131-91 116 51 124-68 127 64v195H0z" fill="#0b1c22"/>
+  <g opacity=".92">
+    <use href="#pine" x="-22" y="374" width="102" height="306"/>
+    <use href="#pine" x="48" y="421" width="78" height="234"/>
+    <use href="#pine" x="117" y="360" width="102" height="306"/>
+    <use href="#pine" x="202" y="438" width="74" height="222"/>
+    <use href="#pine" x="277" y="390" width="92" height="276"/>
+    <use href="#pine" x="347" y="446" width="70" height="210"/>
+    <use href="#pine" x="1260" y="422" width="76" height="228"/>
+    <use href="#pine" x="1322" y="372" width="100" height="300"/>
+    <use href="#pine" x="1400" y="433" width="72" height="216"/>
+    <use href="#pine" x="1460" y="358" width="108" height="324"/>
+    <use href="#pine" x="1536" y="406" width="82" height="246"/>
+  </g>
+  <path d="M0 610q205-31 399 0t401 0 400 0 400 0v390H0z" fill="url(#lake)"/>
+  <path d="M1050 610h146l155 390h-450z" fill="url(#reflection)"/>
+  <path d="M0 650q210 18 420 0t420 0 420 0 340 0v350H0z" fill="url(#ripples)"/>
+  <path d="M0 720q250 38 500 0t500 0 600 0M0 806q180 25 360 0t360 0 360 0 520 0M0 905q220 22 440 0t440 0 440 0 280 0" fill="none" stroke="#9cb4a9" stroke-opacity=".1" stroke-width="2"/>
+  <path fill="url(#shade)" d="M0 0h1600v1000H0z"/>
+</svg>

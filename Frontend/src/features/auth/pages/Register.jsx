@@ -1,22 +1,25 @@
 import { useState } from 'react'
-import { Link,useNavigate} from 'react-router'
+import { Link } from 'react-router'
+import { useSelector } from 'react-redux'
+import { useAuth } from '../hook/auth.hook'
 import '../../../styles/register.scss'
 
 const Register = () => {
-  const [email,setEmail]=useState('');
-  const [password,setPassword]=useState('');
-  const [username,setUsername]=useState('');
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('')
+  const { handleRegister, clearRegistrationFeedback } = useAuth()
+  const { registrationLoading, registrationError, registrationMessage } = useSelector(state => state.auth)
 
-  
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     event.preventDefault()
-    const payload = {
-        email,
-        password
-    }
-   
-  console.log("RegisterPayload:", payload);
-    
+    if (registrationLoading) return
+    await handleRegister({ username, email, password })
+  }
+
+  const handleFieldChange = (setter) => event => {
+    clearRegistrationFeedback()
+    setter(event.target.value)
   }
 
   return (
@@ -42,7 +45,8 @@ const Register = () => {
               pattern="[a-zA-Z0-9_]+"
               title="Use 3–30 letters, numbers, or underscores."
               value={username}
-              onChange={(e)=>{setUsername(e.target.value)}}
+              onChange={handleFieldChange(setUsername)}
+              disabled={registrationLoading}
               required
             />
           </div>
@@ -56,7 +60,8 @@ const Register = () => {
               placeholder="you@example.com"
               autoComplete="email"
               value={email}
-              onChange={(e)=>{setEmail(e.target.value)}}
+              onChange={handleFieldChange(setEmail)}
+              disabled={registrationLoading}
               required
             />
           </div>
@@ -71,14 +76,26 @@ const Register = () => {
               autoComplete="new-password"
               minLength={6}
               value={password}
-              onChange={(e)=>{setPassword(e.target.value)}}
+              onChange={handleFieldChange(setPassword)}
+              disabled={registrationLoading}
               required
             />
           </div>
 
-          
-          <button className="register-form__submit" type="submit" >
-             Create Account
+          {registrationError && (
+            <p className="register-form__message register-form__message--error" role="alert">
+              {registrationError}
+            </p>
+          )}
+
+          {registrationMessage && (
+            <p className="register-form__message register-form__message--success" role="status">
+              {registrationMessage} Check your inbox to verify your email before signing in.
+            </p>
+          )}
+
+          <button className="register-form__submit" type="submit" disabled={registrationLoading}>
+            {registrationLoading ? 'Creating account...' : 'Create Account'}
           </button>
 
           <p className="register-form__switch">

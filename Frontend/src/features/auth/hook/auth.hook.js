@@ -1,19 +1,43 @@
 import {useDispatch} from 'react-redux'
-import {login,register,getMe,resendVerificationEmail} from '../services/auth.api'
-import {setUser,setLoading,setError} from '../auth.slice'
+import {login,register,getMe} from '../services/auth.api'
+import {
+    clearRegistrationFeedback,
+    setRegistrationError,
+    setRegistrationLoading,
+    setRegistrationMessage,
+    setUser,
+    setLoading,
+    setError
+} from '../auth.slice'
+
+const getRegistrationErrorMessage = error => {
+    const responseData = error?.response?.data
+    const validationMessage = responseData?.errors?.[0]?.msg
+
+    return validationMessage ||
+        responseData?.message ||
+        error?.message ||
+        "Registration failed. Please try again."
+}
+
 export function useAuth(){
     const dispatch=useDispatch()
     const handleRegister=async ({username,email,password})=>{
-      
+        dispatch(clearRegistrationFeedback())
+        dispatch(setRegistrationLoading(true))
+
         try{
-              dispatch(setLoading(true));
-            const data=await register({username,email,password});
-            
-           
+            const data=await register({username,email,password})
+            if (!data?.success) {
+                throw new Error(data?.message || "Registration could not be completed.")
+            }
+            dispatch(setRegistrationMessage(data.message || "Your account has been created."))
+            return true
         }catch(error){
-           dispatch(setError(error.response.data.message || "Registration failed"));
+            dispatch(setRegistrationError(getRegistrationErrorMessage(error)))
+            return false
         }finally{
-             dispatch(setLoading(false));
+            dispatch(setRegistrationLoading(false))
         }
     }
     async function handleLogin({email,password}){
@@ -38,6 +62,5 @@ export function useAuth(){
         dispatch(setLoading(false));
     }
 }
-return {handleRegister,handleLogin,handleGetMe}
+return {handleRegister,handleLogin,handleGetMe,clearRegistrationFeedback:()=>dispatch(clearRegistrationFeedback())}
 }
-
