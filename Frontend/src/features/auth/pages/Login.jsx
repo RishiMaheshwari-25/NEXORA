@@ -1,32 +1,31 @@
 import { useState } from 'react'
-import { Link,useNavigate } from 'react-router'
-import '../../../styles/login.scss'
+import { Link, Navigate, useNavigate } from 'react-router'
+import { useSelector } from 'react-redux'
 import { useAuth } from '../hook/auth.hook'
-import {useSelector} from 'react-redux'
-import {Navigate} from 'react-router'
+import '../../../styles/login.scss'
 
 const Login = () => {
-  const [email,setEmail]=useState('');
-  const [password,setPassword]=useState('');
-  const {handleLogin}=useAuth();
-  const navigate=useNavigate();
-  const user=useSelector(state=>state.auth.user);
-  const loading=useSelector(state=>state.auth.loading);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const { handleLogin } = useAuth()
+  const navigate = useNavigate()
+  const user = useSelector(state => state.auth.user)
+  const loading = useSelector(state => state.auth.loading)
+  const authError = useSelector(state => state.auth.error)
 
-  
-const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     event.preventDefault()
-    const payload = {
-        email,
-        password
+
+    const loggedIn = await handleLogin({ email, password })
+    if (loggedIn) {
+      navigate('/')
     }
-   await handleLogin(payload);
-       navigate('/');
-    
   }
-  if(!loading && user){
+
+  if (!loading && user) {
     return <Navigate to="/" replace />
   }
+
   return (
     <main className="login-page">
       <section className="login-card" aria-labelledby="login-title">
@@ -46,9 +45,8 @@ const handleSubmit = async (event) => {
               placeholder="you@example.com"
               autoComplete="email"
               value={email}
-              onChange={(e)=>{
-                setEmail(e.target.value)
-              }}
+              onChange={event => setEmail(event.target.value)}
+              disabled={loading}
               required
             />
           </div>
@@ -62,21 +60,32 @@ const handleSubmit = async (event) => {
               placeholder="Enter your password"
               autoComplete="current-password"
               value={password}
-              onChange={(e)=>{setPassword(e.target.value)}}
+              onChange={event => setPassword(event.target.value)}
+              disabled={loading}
               required
             />
           </div>
 
-          
+          {authError && (
+            <p className="login-form__message login-form__message--error" role="alert">
+              {authError}
+            </p>
+          )}
 
-          <button className="login-form__submit" type="submit" >
-            Login
+          <button className="login-form__submit" type="submit" disabled={loading}>
+            {loading ? 'Signing in...' : 'Login'}
           </button>
 
-          <p className="login-form__switch">
-            Need an account?{' '}
-            <Link to="/register">Create one</Link>
-          </p>
+          <div className="login-form__meta">
+            <p className="login-form__switch">
+              Need an account?{' '}
+              <Link to="/register">Create one</Link>
+            </p>
+            <p className="login-form__switch login-form__switch--secondary">
+              Need a fresh verification link?{' '}
+              <Link to="/resend-verification">Resend email</Link>
+            </p>
+          </div>
         </form>
       </section>
     </main>

@@ -16,7 +16,7 @@ export async function register(req,res,next){
     const user=await userModel.create({username,email,password});
     const emailVerificationToken=jwt.sign({
         email:user.email
-    },process.env.JWT_SECRET)
+    },process.env.JWT_SECRET,{expiresIn:"24h"})
     await sendEmail({
         to:email,
         subject:"Welcome to NEXORA",
@@ -102,25 +102,13 @@ export async function verifyEmail(req,res){
     try{const decoded=jwt.verify(token,process.env.JWT_SECRET);
     const user=await userModel.findOne({email:decoded.email})
     if(!user){
-        return res.status(400).json({
-            message:"Invalid token",
-            success:false,
-            err:"User not found"
-        })
+        return res.redirect("http://localhost:5173/verification-result?status=account-not-found");
     }
     user.verified=true;
     await user.save();
-      const html=`
-                 <h1>Email Verified Successfully!</h1>
-                 <p>Your email has been verified.You can now login into your account <br>
-                 <a href="http://localhost:3001/login">Go to Login</a>`
-         return res.send(html);
+    return res.redirect("http://localhost:5173/verification-result?status=verified");
         }catch(err){
-            return res.status(400).json({
-            message:"Invalid or Expired token",
-            success:false,
-            err:err.message
-        })
+            return res.redirect("http://localhost:5173/verification-result?status=invalid-link");
         }
         
 }
@@ -137,7 +125,8 @@ export async function resendVerificationEmail(req,res){
     const emailVerificationToken=jwt.sign({
         email:user.email
     },process.env.JWT_SECRET,{expiresIn:"15m"})
-    const verificationUrl=`http://localhost:3000/api/auth/verify-email?token=${emailVerificationToken}`;
+    const verificationUrl=`http://localhost:3001/api/auth/verify-email?token=${emailVerificationToken}`;
+    const resendUrl=`http://localhost:3001/api/auth/resend-verification-email?token=${emailVerificationToken}`;
     await sendEmail({
         to:user.email,
         subject:"Resend Email Verification",
@@ -145,7 +134,9 @@ export async function resendVerificationEmail(req,res){
                <p>Hi ${user.username}</p>
                 <p>We received a request to resend the email verification for your account at <strong>NEXORA</strong>.</p>
                 <a href="${verificationUrl}">Verify Email</a>
-                <p>This verification link expires in 15 minutes.</p>`
+                <p>This verification link expires in 15 minutes.</p>
+                <p>If the link expires, you can request another verification email:</p>
+                <a href="${resendUrl}">Resend Verification Email</a>`
     })
     return res.status(200).json({
         message:"Verification email resent successfully", 
@@ -159,4 +150,58 @@ export async function resendVerificationEmail(req,res){
         err:err.message
     })
 }
+}
+
+export async function resendVerificationEmailFromLink(req,res){
+    const {token}=req.query;
+    if(typeof token!=="string" || !token){
+        return res.redirect("http://localhost:5173/verification-result?status=invalid-link");
+    }
+
+    let decoded;
+    try{
+        decoded=jwt.verify(token,process.env.JWT_SECRET);
+    }catch{
+        return res.redirect("http://localhost:5173/verification-result?status=expired-link");
+    }
+
+    if(typeof decoded==="string" || typeof decoded.email!=="string"){
+        return res.redirect("http://localhost:5173/verification-result?status=invalid-link");
+    }
+
+    const user=await userModel.findOne({email:decoded.email});
+    if(!user){
+        return res.redirect("http://localhost:5173/verification-result?status=account-not-found");
+    }
+    if(user.verified){
+        return res.redirect("http://localhost:5173/verification-result?status=already-verified");
+    }
+
+    const emailVerificationToken=jwt.sign(
+        {email:user.email},
+        process.env.JWT_SECRET,
+        {expiresIn:"24h"}
+    );
+    const verificationUrl=
+        `http://localhost:3001/api/auth/verify-email?token=${encodeURIComponent(emailVerificationToken)}`;
+    const resendUrl=
+        `http://localhost:3001/api/auth/resend-verification-email?token=${encodeURIComponent(emailVerificationToken)}`;
+
+    try{
+        await sendEmail({
+            to:user.email,
+            subject:"Verify your NEXORA email",
+            html:`
+                <p>Hi ${user.username},</p>
+                <p>Here is your new email verification link:</p>
+                <a href="${verificationUrl}">Verify Email</a>
+                <p>This link expires in 24 hours.</p>
+                <p>If it expires, you can request another verification email:</p>
+                <a href="${resendUrl}">Resend Verification Email</a>`
+        });
+    }catch{
+        return res.redirect("http://localhost:5173/verification-result?status=resend-failed");
+    }
+
+    return res.redirect("http://localhost:5173/verification-result?status=resend-sent");
 }

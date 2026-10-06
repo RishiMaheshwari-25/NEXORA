@@ -1,8 +1,8 @@
-.login-page {
+.verification-page {
   align-items: center;
   background:
-    radial-gradient(ellipse at 12% 18%, rgba(236, 54, 84, 0.2), transparent 38%),
-    radial-gradient(ellipse at 88% 84%, rgba(80, 31, 48, 0.24), transparent 42%),
+    radial-gradient(ellipse at 86% 12%, rgba(236, 54, 84, 0.2), transparent 38%),
+    radial-gradient(ellipse at 12% 88%, rgba(80, 31, 48, 0.24), transparent 42%),
     #090a0f;
   color: #f4f1f2;
   display: flex;
@@ -11,17 +11,56 @@
   padding: 32px 20px;
 }
 
-.login-card {
+.verification-card {
   background: rgba(20, 20, 27, 0.92);
   border: 1px solid #343039;
   border-radius: 20px;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
-  max-width: 440px;
+  max-width: 460px;
   padding: 40px 44px;
   width: 100%;
 }
 
-.login-card__intro {
+.verification-result {
+  text-align: center;
+
+  .verification-card__intro {
+    margin-bottom: 24px;
+  }
+}
+
+.verification-result__icon {
+  align-items: center;
+  border-radius: 50%;
+  display: flex;
+  font-size: 1.7rem;
+  font-weight: 700;
+  height: 68px;
+  justify-content: center;
+  margin: 0 auto 22px;
+  width: 68px;
+
+  &--success {
+    background: rgba(49, 138, 97, 0.15);
+    border: 1px solid rgba(134, 221, 176, 0.32);
+    color: #86ddb0;
+  }
+
+  &--error {
+    background: rgba(227, 66, 86, 0.13);
+    border: 1px solid rgba(255, 154, 166, 0.3);
+    color: #ff9aa6;
+  }
+}
+
+.verification-result__action {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.verification-card__intro {
   margin-bottom: 28px;
 
   h1 {
@@ -39,7 +78,7 @@
   }
 }
 
-.login-card__eyebrow {
+.verification-card__eyebrow {
   color: #ff667b;
   font-size: 0.75rem;
   font-weight: 700;
@@ -47,12 +86,12 @@
   text-transform: uppercase;
 }
 
-.login-form {
+.verification-form {
   display: grid;
   gap: 18px;
 }
 
-.login-form__field {
+.verification-form__field {
   display: grid;
   gap: 8px;
 
@@ -85,7 +124,7 @@
   }
 }
 
-.login-form__message {
+.verification-form__message {
   border-radius: 8px;
   font-size: 0.9rem;
   line-height: 1.5;
@@ -103,7 +142,7 @@
   }
 }
 
-.login-form__submit {
+.verification-form__submit {
   background: linear-gradient(110deg, #ed405f, #bd304c);
   border: 0;
   border-radius: 10px;
@@ -133,12 +172,7 @@
   }
 }
 
-.login-form__meta {
-  display: grid;
-  gap: 10px;
-}
-
-.login-form__switch {
+.verification-form__switch {
   color: #aaa4ad;
   font-size: 0.92rem;
   margin: 0;
@@ -154,14 +188,10 @@
       text-decoration: underline;
     }
   }
-
-  &--secondary {
-    color: #c9c1c8;
-  }
 }
 
 @media (max-width: 480px) {
-  .login-card {
+  .verification-card {
     padding: 32px 24px;
   }
 }
