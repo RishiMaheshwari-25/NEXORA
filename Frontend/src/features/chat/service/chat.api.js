@@ -1,7 +1,8 @@
 import axios from "axios";
+const apiUrl=import.meta.env.VITE_API_URL || "http://localhost:3001";
 // Layer 1: send chat requests to the existing backend endpoint.
 export const api=axios.create({
-    baseURL:"http://localhost:3001",
+    baseURL:apiUrl,
     withCredentials:true
 })
 

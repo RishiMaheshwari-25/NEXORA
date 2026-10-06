@@ -9,6 +9,7 @@ const httpServer=http.createServer(app);
 initSocket(httpServer);
 connectedToDb();
 // testAi()
-httpServer.listen(3001,()=>{
-    console.log("Server is running on port 3001");
+const port=process.env.PORT || 3001;
+httpServer.listen(port,()=>{
+    console.log(`Server is running on port ${port}`);
 })
