@@ -1,5 +1,3 @@
-<video
-  src="https://github.com/RishiMaheshwari-25/NEXORA/issues/1#issue-5723000488"
-  controls
-  width="800">
-</video>
+ Demo
+
+https://github.com/user-attachments/assets/87af0c5a-2a9f-48de-b809-8e0a970c6569
